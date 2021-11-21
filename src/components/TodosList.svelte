@@ -7,19 +7,20 @@
   export let isDone = false;
   export let onEmpty = ""
 
-  let transitionEnd = false;
-  $: shouldDisplayEmptyText = todos.length === 0 && transitionEnd
+  let transitionsStarted = 0;
+  let transitionsEnded = 0;
+  $: shouldDisplayEmptyText = todos.length === 0 && transitionsStarted === transitionsEnded
 </script>
 
 <h1>{title}</h1>
 {#if shouldDisplayEmptyText} {onEmpty} {/if}
-{#each todos as todo (todo.id)}
+{#each todos as {id, description} (id)}
   <Todo
-    id={todo.id} 
-    description={todo.description} 
+    {id}
+    {description}
     {isDone}
-    on:transition-start={() => transitionEnd = false}
-    on:transition-end={() => transitionEnd = true}/>
+    on:transition-start={() => transitionsStarted += 1}
+    on:transition-end={() => transitionsEnded += 1}/>
 {/each}
 
 <style>

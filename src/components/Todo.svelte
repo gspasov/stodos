@@ -5,9 +5,6 @@
   export let id: number;
   export let description: string;
   export let isDone: boolean;
-  let status = "waiting..."
-
-  $: console.info(status)
 
   const dispatch = createEventDispatcher();
 
@@ -17,7 +14,6 @@
         if (todo.id === id) return {...todo, done: !todo.done}
         return todo;
       }))
-    dispatch("transition-start")
   }
 
   function remove(id: number): void {
@@ -27,8 +23,8 @@
 
 <div 
   class="parent {isDone ? "done": "todo"}" 
-  in:fly={{x: 100, duration: 1000}}
-  out:fly={{x: 100, duration: 1000}}
+  transition:fly={{x: 100, duration: 1000}}
+  on:outrostart={() => dispatch("transition-start")}
   on:outroend={() => dispatch("transition-end")}
   on:click={() => toggle(id)}>
   <div>
