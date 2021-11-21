@@ -30,7 +30,7 @@
     id={todo.id} 
     description={todo.description} 
     {isDone}
-    on:toggle={() => transitionEnd = false}
+    on:toggle
     on:remove
     on:transition-toggle={handleTransition}/>
 {/each}
