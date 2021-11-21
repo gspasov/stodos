@@ -45,23 +45,15 @@
     min-height: 40px;
     padding: 0px 4px;
     margin-bottom: 4px;
-    padding: 4px 16px
-  }
-
-  .todo {
+    padding: 4px 16px;
     background: none;
     color:#555;
     border: 1px solid #555;
   }
-
-  .done {
-    background-color: olivedrab;
-    color: antiquewhite;
-  }
+  
   .done span {
     text-decoration: line-through;
   }
-
 
   .todo:hover span {
     text-decoration: line-through;
@@ -79,7 +71,7 @@
     background: none;
     border: none;
     font-size: 16px;
-    color: antiquewhite;
+    color: #555;
     cursor: pointer;
   }
   
