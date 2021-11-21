@@ -4,8 +4,8 @@
 
   export let todo = ""
   export let todoId = 0;
-
-  $: isDisabled = trimmedTodo.length > 50;
+  
+  $: isTooLong = trimmedTodo.length > 50;
   $: trimmedTodo = todo.replace(/ +/g, " ").trim();
 
   function createTodo(): void {
@@ -17,9 +17,9 @@
 <form on:submit|preventDefault={createTodo}>
   <div class="input-group">
     <input type="text" name="todo" placeholder="what needs to be done?" bind:value={todo}/>
-    <button type="submit" disabled={isDisabled}>Add</button>
+    <button type="submit" disabled={isTooLong}>Add</button>
   </div>
-  {#if isDisabled}
+  {#if isTooLong}
     <span class="warning">Todo is too long!</span>
   {/if}
 </form>

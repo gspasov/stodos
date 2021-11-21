@@ -12,11 +12,13 @@
 		title={"todo"}
 		todos={todos.filter((t) => !t.done)}
 		onEmpty={"Horray! Nothing to do!"}/>
-	<TodosList 
-		title={"done"}
-		isDone={true}
-		todos={todos.filter((t) => t.done)}
-		onEmpty={"Empty.."}/>
+	<div>
+		<TodosList 
+			title={"done"}
+			isDone={true}
+			todos={todos.filter((t) => t.done)}
+			onEmpty={"Empty.."}/>
+	</div>
 </main>
 
 <style>
@@ -25,5 +27,9 @@
 		margin-left: auto;
   	margin-right: auto;
 		margin-top: 100px;
+	}
+
+	div {
+		padding-bottom: 20px;
 	}
 </style>
