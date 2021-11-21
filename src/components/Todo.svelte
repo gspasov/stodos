@@ -1,6 +1,7 @@
 <script lang="ts">
   import {createEventDispatcher} from "svelte"
-  import { fade, fly, slide, crossfade,blur,scale } from 'svelte/transition';
+  import { fly } from 'svelte/transition';
+  import { TodosStore } from "../stores";
   export let id: number;
   export let description: string;
   export let isDone: boolean;
@@ -11,16 +12,16 @@
   const dispatch = createEventDispatcher();
 
   function toggle(id: number): void {
-    dispatch("toggle", id)
+    TodosStore.update((todos) => 
+      todos.map((todo) => {
+        if (todo.id === id) return {...todo, done: !todo.done}
+        return todo;
+      }))
+    dispatch("transition-start")
   }
 
   function remove(id: number): void {
-    dispatch("remove", id)
-  }
-
-  function toggleTransition(hasEnded: boolean): void {
-    console.info(`${isDone ? "done": "todo"} toggles transition`)
-    dispatch("transition-toggle", hasEnded)
+    TodosStore.update((todos) => todos.filter((todo) => todo.id !== id))
   }
 </script>
 
@@ -28,7 +29,7 @@
   class="parent {isDone ? "done": "todo"}" 
   in:fly={{x: 100, duration: 1000}}
   out:fly={{x: 100, duration: 1000}}
-  on:outroend={() => toggleTransition(true)}
+  on:outroend={() => dispatch("transition-end")}
   on:click={() => toggle(id)}>
   <div>
     {#if isDone} &#10004; {/if} <!-- Adds a checkmark if Todo is 'done' -->

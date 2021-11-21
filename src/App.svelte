@@ -1,48 +1,22 @@
 <script lang="ts">
-	import {Todo} from "./types"
 	import TodosList from "./components/TodosList.svelte";
 	import TodoForm from "./components/TodoForm.svelte";
+	import { TodosStore } from "./stores";
 
-	let todo = "";
-	let todos: Todo[] = []
-
-	function createTodo(e: CustomEvent<Todo>): void {
-		const newTodo: Todo = e.detail
-		todos = [...todos, newTodo]
-		todo = ""
-	}
-
-	function toggleTodo(e: CustomEvent<number>): void {
-		const id = e.detail
-		todos[id-1] = {...todos[id-1], done: !todos[id-1].done}
-	}
-
-	function removeTodo(e: CustomEvent<number>): void {
-		const id = e.detail
-		todos = todos.filter((todo) => todo.id !== id)
-	}
+	$: todos  = $TodosStore
 </script>
 
 <main>
-	<TodoForm 
-		todoId={todos.length + 1}
-		bind:todo={todo}
-		on:create={createTodo}/>
-
+	<TodoForm todoId={todos.length + 1}/>
 	<TodosList 
 		title={"todo"}
 		todos={todos.filter((t) => !t.done)}
-		onEmpty={"Horray! Nothing to do!"}
-		on:toggle={toggleTodo}
-		on:remove={removeTodo}/>
-
+		onEmpty={"Horray! Nothing to do!"}/>
 	<TodosList 
 		title={"done"}
 		isDone={true}
 		todos={todos.filter((t) => t.done)}
-		onEmpty={"Empty.."}
-		on:toggle={toggleTodo}
-		on:remove={removeTodo}/>
+		onEmpty={"Empty.."}/>
 </main>
 
 <style>

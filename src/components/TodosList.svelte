@@ -6,33 +6,20 @@
   export let title = "";
   export let isDone = false;
   export let onEmpty = ""
+
   let transitionEnd = false;
-
   $: shouldDisplayEmptyText = todos.length === 0 && transitionEnd
-  $: {
-    console.log(`${title} transition-end`, transitionEnd)
-    console.info(`${title} todos.length`, todos.length)
-    console.info(`${title} should display`, shouldDisplayEmptyText)
-  }
-
-  function handleTransition(e: CustomEvent<boolean>) {
-    console.info("${title} - handle Transition is called", transitionEnd)
-    transitionEnd = e.detail;
-  }
 </script>
 
 <h1>{title}</h1>
-{#if shouldDisplayEmptyText}
-  {onEmpty}
-{/if}
+{#if shouldDisplayEmptyText} {onEmpty} {/if}
 {#each todos as todo (todo.id)}
-  <Todo 
+  <Todo
     id={todo.id} 
     description={todo.description} 
     {isDone}
-    on:toggle
-    on:remove
-    on:transition-toggle={handleTransition}/>
+    on:transition-start={() => transitionEnd = false}
+    on:transition-end={() => transitionEnd = true}/>
 {/each}
 
 <style>

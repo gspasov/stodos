@@ -1,20 +1,20 @@
 <script lang="ts">
-  import {createEventDispatcher} from "svelte"
+  import { TodosStore } from "../stores";
   import { Todo } from "../types";
 
   export let todo = ""
   export let todoId = 0;
-  const dispatch = createEventDispatcher();
 
   $: isDisabled = trimmedTodo.length > 50;
   $: trimmedTodo = todo.replace(/ +/g, " ").trim();
 
-  function handleCreateTodo(): void {
-    dispatch("create", Todo(todoId, trimmedTodo, false))
-  }
+  function createTodo(): void {
+    TodosStore.update((todos) => [...todos, Todo(todoId, trimmedTodo, false)])
+		todo = ""
+	}
 </script>
 
-<form on:submit|preventDefault={handleCreateTodo}>
+<form on:submit|preventDefault={createTodo}>
   <div class="input-group">
     <input type="text" name="todo" placeholder="what needs to be done?" bind:value={todo}/>
     <button type="submit" disabled={isDisabled}>Add</button>
