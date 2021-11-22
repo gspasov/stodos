@@ -10,10 +10,17 @@
   let transitionsStarted = 0;
   let transitionsEnded = 0;
   $: shouldDisplayEmptyText = todos.length === 0 && transitionsStarted === transitionsEnded
+
+  $: count = todos.length
 </script>
 
-<h1>{title}</h1>
-{#if shouldDisplayEmptyText} {onEmpty} {/if}
+<div>
+  <h1>{title}</h1>
+  <h2>{count}</h2>
+</div>
+{#if shouldDisplayEmptyText} 
+  <span>{onEmpty}</span> 
+{/if}
 {#each todos as {id, description} (id)}
   <Todo
     {id}
@@ -25,9 +32,23 @@
 
 <style>
   h1 {
+    display: inline-block;
     color: orangered;
     text-transform: uppercase;
     font-size: 2em;
     font-weight: 400;
+    margin: 20px 0px;
+    line-height: 40px;
+  }
+  h2 {
+    float: right;
+    color: #555;
+    font-weight: 500;
+    margin: 20px 0px;
+    line-height: 40px;
+  }
+
+  span {
+    color: #555;
   }
 </style>
