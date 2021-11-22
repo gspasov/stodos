@@ -63,6 +63,10 @@
     text-decoration: none;
   }
 
+  span {
+    overflow-wrap: anywhere;
+  }
+
   span:hover {
     cursor: default;
   }
