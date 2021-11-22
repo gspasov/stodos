@@ -4,12 +4,20 @@
 
   export let todo = ""
   export let todoId = 0;
+  let isTooShort = false;
   
-  $: isTooLong = trimmedTodo.length > 50;
   $: trimmedTodo = todo.replace(/ +/g, " ").trim();
+  $: isTooLong = trimmedTodo.length > 100;
+  $: isAlmostTooLong = trimmedTodo.length > 50;
+  $: isTooShort = isTooShort && !(trimmedTodo.length > 3)
 
   function createTodo(): void {
+    if (trimmedTodo.length < 3) {
+      isTooShort = true;
+      return;
+    }
     TodosStore.update((todos) => [...todos, Todo(todoId, trimmedTodo, false)])
+    isTooShort = false;
 		todo = ""
 	}
 </script>
@@ -20,7 +28,20 @@
     <button type="submit" disabled={isTooLong}>Add</button>
   </div>
   {#if isTooLong}
-    <span class="warning">Todo is too long!</span>
+    <span class="error">
+      Todo is too long! 
+      <i>(the limit is 500 characters)</i>
+    </span>
+  {:else if isAlmostTooLong}
+    <span class="warning">
+      You are approaching the character limit! {trimmedTodo.length}/500<br/>
+      <i>(the limit is 500 characters)</i>
+    </span>
+  {:else if isTooShort}
+    <span class="error">
+      Todo is too short! 
+      <i>(at minimum 3 characters are needed)</i>
+    </span>
   {/if}
 </form>
 
@@ -33,8 +54,13 @@
     border-radius: 4px;
     margin-top: 15px;
   }
-  
+
   .warning {
+    font-weight: 400;
+    color: darkgoldenrod
+  }
+  
+  .error {
     font-weight: 500;
     color: crimson
   }
